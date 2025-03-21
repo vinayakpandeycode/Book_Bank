@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Bank</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #0056b3;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        #searchBox {
+            padding: 10px;
+            width: 80%;
+            margin-top: 10px;
+        }
+        .book-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .book {
+            background-color: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .borrow-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Book Bank</h1>
+        <input type="text" id="searchBox" placeholder="Search books...">
+    </header>
+    
+    <nav>
+        <a href="#" onclick="show404()">Home</a>
+        <a href="#" onclick="show404()">About</a>
+        <a href="#" onclick="show404()">Books</a>
+        <a href="#" onclick="show404()">Order History</a>
+        <a href="#" onclick="show404()">Contact Us</a>
+    </nav>
+    
+    <main>
+        <div class="book-container" id="bookList"></div>
+    </main>
+    
+    <script>
+        function show404() {
+            alert("404 Not Found: This page does not exist.");
+        }
+        
+        const books = [
+            { title: "HTML & CSS", author: "Jon Duckett", price: "$25", quantity: 10, available: true },
+            { title: "JavaScript: The Good Parts", author: "Douglas Crockford", price: "$30", quantity: 5, available: true },
+            { title: "Eloquent JavaScript", author: "Marijn Haverbeke", price: "$35", quantity: 8, available: true },
+            { title: "Python Crash Course", author: "Eric Matthes", price: "$40", quantity: 12, available: true },
+            { title: "You Don't Know JS", author: "Kyle Simpson", price: "$28", quantity: 7, available: true },
+        ];
+        
+        function displayBooks() {
+            const bookList = document.getElementById("bookList");
+            bookList.innerHTML = "";
+            books.forEach((book, index) => {
+                const bookElement = document.createElement("div");
+                bookElement.classList.add("book");
+                bookElement.innerHTML = `
+                    <h3>${book.title}</h3>
+                    <p>Author: ${book.author}</p>
+                    <p>Price: ${book.price}</p>
+                    <p>Available: ${book.quantity}</p>
+                    <button class="borrow-btn" onclick="borrowBook(${index})">
+                        ${book.available ? "Borrow" : "Return"}
+                    </button>
+                `;
+                bookList.appendChild(bookElement);
+            });
+        }
+        
+        function borrowBook(index) {
+            if (books[index].quantity > 0) {
+                books[index].quantity -= 1;
+            }
+            displayBooks();
+        }
+        
+        document.getElementById("searchBox").addEventListener("input", function () {
+            const searchTerm = this.value.toLowerCase();
+            const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchTerm));
+            document.getElementById("bookList").innerHTML = "";
+            filteredBooks.forEach((book, index) => {
+                const bookElement = document.createElement("div");
+                bookElement.classList.add("book");
+                bookElement.innerHTML = `
+                    <h3>${book.title}</h3>
+                    <p>Author: ${book.author}</p>
+                    <p>Price: ${book.price}</p>
+                    <p>Available: ${book.quantity}</p>
+                    <button class="borrow-btn" onclick="borrowBook(${index})">
+                        ${book.available ? "Borrow" : "Return"}
+                    </button>
+                `;
+                document.getElementById("bookList").appendChild(bookElement);
+            });
+        });
+        
+        displayBooks();
+    </script>
+</body>
+</html>
